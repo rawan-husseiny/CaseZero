@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08111b">
+<title>CaseZero | لغز القلادة المفقودة</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;background:#071019;color:#f4f7fa}
+body{overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+.app{min-height:100vh;background:
+radial-gradient(circle at 80% 0%,rgba(175,65,58,.15),transparent 28%),
+radial-gradient(circle at 10% 30%,rgba(46,93,119,.12),transparent 25%),
+#071019}
+header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #20313e;background:rgba(6,14,22,.95);position:sticky;top:0;z-index:10}
+.logo{display:flex;align-items:center;gap:10px}.logoIcon{width:40px;height:40px;border:1px solid #3b4c59;background:#12212d;border-radius:10px;display:grid;place-items:center;font-size:21px}
+.logoText{font-family:Georgia,serif;font-size:22px;direction:ltr}.logoText b{color:#d95750}
+.headerBtn{background:#12212d;border:1px solid #304250;color:#dce4e9;border-radius:9px;padding:9px 12px}
+main{width:min(1050px,100%);margin:auto;padding:22px 16px 40px}
+.hero{border:1px solid #263845;border-radius:18px;padding:28px;min-height:270px;background:
+linear-gradient(135deg,rgba(17,33,45,.98),rgba(8,16,24,.98));position:relative;overflow:hidden}
+.hero:after{content:"🔎";position:absolute;left:-15px;bottom:-55px;font-size:190px;opacity:.035;transform:rotate(-15deg)}
+.caseLabel{color:#9aaab5;font-size:12px}.hero h1{font-family:Georgia,serif;font-size:42px;margin:10px 0 12px;line-height:1.2}.hero h1 span{color:#d95750}.hero p{max-width:720px;color:#c3cdd4;line-height:1.9;margin:0;font-size:15px}
+.status{display:inline-block;margin-top:18px;padding:7px 11px;background:#382022;color:#f2c0bd;border:1px solid #683534;border-radius:7px;font-size:12px}
+.instructions{margin-top:16px;border:1px solid #314552;background:#0d1b26;border-radius:13px;padding:16px}
+.instructions strong{display:block;margin-bottom:8px}.instructions div{color:#aebbc4;font-size:13px;line-height:1.8}
+.progressWrap{margin:18px 0 0}.progressTop{display:flex;justify-content:space-between;color:#93a2ad;font-size:12px}.bar{height:7px;background:#172631;border-radius:20px;margin-top:7px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#d95750;transition:.35s}
+.screen{display:none;margin-top:18px}.screen.active{display:block}
+.card{background:#0c1822;border:1px solid #243744;border-radius:14px;padding:21px}
+.card h2{font-family:Georgia,serif;margin:0 0 8px;font-size:24px}.sub{color:#9dabb5;font-size:13px;line-height:1.7;margin:0 0 18px}
+.action{width:100%;border:0;background:#d95750;color:#fff;border-radius:9px;padding:14px 16px;font-weight:bold;font-size:15px;margin-top:14px}.action:hover{background:#e4655e}
+.secondary{border:1px solid #304350;background:#11212d;color:#e1e8ec;border-radius:9px;padding:12px 15px;width:100%;margin-top:9px}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.facts{display:grid;gap:9px}.fact{background:#101f2b;border:1px solid #273b49;border-radius:9px;padding:12px;color:#c0cbd2;line-height:1.7;font-size:13px}.fact b{color:#fff}
+.evidenceGrid,.suspectGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{background:#0f1e29;border:1px solid #293d4a;border-radius:11px;padding:15px;text-align:right;color:#dce4e9;min-height:105px}.item:hover{border-color:#9d4844}.item.done{border-color:#3e7858;background:#0d2118}.item .icon{font-size:27px;margin-bottom:8px}.item b{display:block;margin-bottom:5px}.item small{display:block;color:#95a4ae;line-height:1.55}
+.counter{float:left;background:#1a2b37;padding:5px 9px;border-radius:20px;color:#c5d0d7;font-size:11px}
+.questionBox{margin-top:15px;border:1px solid #314653;background:#101f2b;border-radius:11px;padding:16px;display:none}.questionBox.show{display:block}.quote{color:#d5dde2;line-height:1.9}.hint{margin-top:12px;color:#9faeb8;font-size:12px;line-height:1.7}
+.choiceGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{border:1px solid #304452;background:#10202c;border-radius:10px;padding:15px;text-align:right;color:#fff}.choice:hover{border-color:#d95750}.choice small{display:block;color:#91a0ab;margin-top:5px}
+.result{display:none;margin-top:16px;padding:18px;border-radius:11px;line-height:1.9}.result.show{display:block}.good{background:#10271b;border:1px solid #397252;color:#c5e5cf}.bad{background:#2a1719;border:1px solid #71383a;color:#e7c0c0}
+.note{width:100%;min-height:170px;background:#08131c;border:1px solid #2b3e4b;color:#fff;border-radius:10px;padding:14px;resize:vertical;outline:none;line-height:1.8}
+.footer{text-align:center;color:#6f7f8b;font-size:11px;padding:25px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}.modal.show{display:flex}.modalCard{width:min(520px,100%);background:#0d1a25;border:1px solid #334856;border-radius:15px;padding:22px;max-height:90vh;overflow:auto}.modalCard h3{font-family:Georgia,serif;font-size:24px;margin:0 0 10px}.modalCard p{color:#b9c6ce;line-height:1.9}.modalCard ul{color:#b9c6ce;line-height:2}
+@media(max-width:700px){
+header{height:62px;padding:0 11px}.logoText{font-size:19px}.logoIcon{width:36px;height:36px}.headerBtn{padding:8px 9px;font-size:12px}
+main{padding:12px 10px 30px}.hero{padding:22px 17px;min-height:auto}.hero h1{font-size:31px}.hero p{font-size:13px}.instructions{padding:13px}
+.two{grid-template-columns:1fr}.evidenceGrid,.suspectGrid,.choiceGrid{grid-template-columns:1fr}.card{padding:16px}.card h2{font-size:21px}
+.item{min-height:auto}.action{padding:13px}.status{margin-top:13px}
+}
+
+.result-box{
+  margin:24px auto 10px;
+  padding:26px 20px;
+  max-width:720px;
+  text-align:center;
+  border:1px solid var(--border,#ddd);
+  border-radius:22px;
+  background:var(--card,#fff);
+}
+.result-box[hidden]{display:none!important}
+.result-icon{
+  width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;margin:0 auto 14px;
+  font-size:32px;font-weight:800;
+  background:#e9f8ef;color:#16833b;
+}
+.result-box.wrong .result-icon{background:#fff0f0;color:#c62828}
+.result-box h2{margin:8px 0 10px;font-size:clamp(22px,5vw,30px)}
+.result-box>p{margin:0 auto 18px;max-width:560px;line-height:1.8}
+.solution-card{
+  text-align:right;
+  margin:0 auto 20px;
+  padding:16px;
+  border-radius:16px;
+  background:#f7f7f7;
+}
+.solution-card span{display:block;font-size:13px;opacity:.7;margin-bottom:5px}
+.solution-card strong{display:block;font-size:21px;margin-bottom:7px}
+.solution-card p{margin:0;line-height:1.7}
+.site-footer{
+  margin-top:42px;
+  padding:28px 18px 24px;
+  text-align:center;
+  border-top:1px solid var(--border,#ddd);
+  color:inherit;
+}
+.footer-game-name{font-size:22px;font-weight:800;margin-bottom:8px}
+.site-footer p{max-width:560px;margin:0 auto 14px;line-height:1.7;opacity:.72}
+.footer-credit{font-weight:700;letter-spacing:.2px}
+@media(max-width:700px){
+  .result-box{margin:20px 12px 8px;padding:22px 15px}
+  .site-footer{margin-top:30px;padding-top:24px}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo"><div class="logoIcon">🔎</div><div class="logoText">Case<b>Zero</b></div></div>
+  <button class="headerBtn" onclick="help()">❔ طريقة اللعب</button>
+</header>
+
+<main>
+<section class="hero">
+  <div class="caseLabel">القضية رقم 01</div>
+  <h1>لغز <span>القلادة المفقودة</span></h1>
+  <p>قلادة أثرية اختفت من صندوق مغلق داخل متحف صغير. أربعة أشخاص فقط كانوا موجودين وقت الاختفاء. مهمتك تعرف مين أخذها — من خلال الأدلة، مش التخمين.</p>
+  <div class="status" id="status">جاهز للتحقيق</div>
+  <div class="instructions">
+    <strong>🎯 تعمل إيه؟</strong>
+    <div>اللعبة مقسمة لـ 4 خطوات. كل ما تخلص خطوة، هتظهر لك الخطوة اللي بعدها. مفيش وقت ولا إجابة محتاجة تخمين.</div>
+  </div>
+  <div class="progressWrap">
+    <div class="progressTop"><span>تقدم التحقيق</span><span id="pct">0%</span></div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section class="screen active" id="s1">
+<div class="card">
+<h2>① افهم القضية</h2>
+<p class="sub">اقرأ المعلومات الأساسية الأول. بعد ما تخلص، اضغط الزر تحت عشان تنتقل للأدلة.</p>
+<div class="two">
+<div class="facts">
+<div class="fact"><b>وقت الاختفاء:</b> بين 10:30 و10:45 مساءً.</div>
+<div class="fact"><b>مكان القلادة:</b> صندوق زجاجي مقفول داخل غرفة العرض.</div>
+<div class="fact"><b>الأشخاص الموجودون:</b> صوفيا، دانيال، إيما، جيمس.</div>
+</div>
+<div class="fact"><b>المشكلة:</b><br>الصندوق لم يُكسر، والباب لم يُفتح بالقوة. إذن الشخص الذي أخذ القلادة كان عنده طريقة للوصول إليها بدون كسر شيء.</div>
+</div>
+<button class="action" onclick="go(2)">فهمت القضية — ابدأ بفحص الأدلة 🔍</button>
+</div>
+</section>
+
+<!-- STEP 2 -->
+<section class="screen" id="s2">
+<div class="card">
+<h2>② افحص الأدلة <span class="counter"><span id="ec">0</span>/5</span></h2>
+<p class="sub">اضغط على كل دليل. اقرأ المعلومة، وبعدها اضغط «رجوع للأدلة». لازم تفحص الخمسة.</p>
+<div class="evidenceGrid" id="evidenceGrid"></div>
+<div class="questionBox" id="evidenceRead"></div>
+<button class="action" id="toSuspects" style="display:none" onclick="go(3)">خلصت الأدلة — اسأل المشتبه بهم 👤</button>
+</div>
+</section>
+
+<!-- STEP 3 -->
+<section class="screen" id="s3">
+<div class="card">
+<h2>③ اسأل المشتبه بهم <span class="counter"><span id="sc">0</span>/4</span></h2>
+<p class="sub">اضغط على كل شخص واقرأ أقواله. دورك هنا إنك تلاحظ أي كلام لا يتفق مع الأدلة.</p>
+<div class="suspectGrid" id="suspectGrid"></div>
+<div class="questionBox" id="suspectRead"></div>
+<button class="action" id="toFinal" style="display:none" onclick="go(4)">خلصت الاستجواب — حل القضية ⚖️</button>
+</div>
+</section>
+
+<!-- STEP 4 -->
+<section class="screen" id="s4">
+<div class="card">
+<h2>④ اختار المتهم</h2>
+<p class="sub">دلوقتي استخدمت الأدلة وسمعت أقوال كل الأشخاص. مين تعتقد أنه أخذ القلادة؟</p>
+<div class="choiceGrid">
+<button class="choice" onclick="answer(0)">👩🏻 <b>صوفيا لين</b><small>أمينة المتحف</small></button>
+<button class="choice" onclick="answer(1)">👨🏻 <b>دانيال مور</b><small>جامع تحف</small></button>
+<button class="choice" onclick="answer(2)">👩🏼 <b>إيما كارتر</b><small>زائرة</small></button>
+<button class="choice" onclick="answer(3)">👨🏽 <b>جيمس بورتر</b><small>حارس الأمن</small></button>
+</div>
+<div id="result" class="result"></div>
+<button class="action" id="restart" style="display:none" onclick="location.reload()">🔄 العب من جديد</button>
+</div>
+</section>
+
+<div class="card" style="margin-top:18px">
+<h2>📝 ملاحظات المحقق</h2>
+<p class="sub">اكتب أي ملاحظة تحبها. هتفضل محفوظة على جهازك.</p>
+<textarea class="note" id="notes" placeholder="مثال: الشخص ده قال إنه كان في مكان معين، لكن الدليل يقول غير كده..."></textarea>
+</div>
+</main>
+<br><br>
+<hr>
+<div class="footer">made by Rawan Husseiny</div>
+</div>
+
+<div class="modal" id="modal"><div class="modalCard" id="modalCard"></div></div>
+
+<script>
+const evidence=[
+["🔐","القفل","القفل سليم تمامًا. لا يوجد أثر كسر. هذا يعني أن القلادة أُخرجت بطريقة عادية باستخدام الوصول الصحيح."],
+["🧤","القفاز","وُجد قفاز أسود صغير خلف الصندوق. عليه بقايا مادة تلميع تُستخدم في غرفة الترميم."],
+["📹","الكاميرا","عند الساعة 10:37 ظهر شخص يدخل ممر غرفة العرض. الصورة لا توضح الوجه، لكنها توضح أنه كان يحمل حقيبة أدوات."],
+["🧵","الخيط","وُجد خيط أزرق داكن عالقًا في حافة الصندوق. نفس نوع القماش موجود في سترة العمل الخاصة بأمينة المتحف."],
+["🛠️","سجل الأدوات","سجل المتحف يوضح أن حقيبة أدوات الترميم تم استعارتها الساعة 10:25 ولم تُعد حتى بعد اكتشاف الاختفاء."]
+];
+
+const suspects=[
+["👩🏻","صوفيا لين","أمينة المتحف","أنا كنت في غرفة الترميم معظم الوقت. استعرت حقيبة الأدوات الساعة 10:25 لأن عندي قطعة محتاجة تنظيف. بعد كده رجعت للمكتب."],
+["👨🏻","دانيال مور","جامع تحف","كنت في قاعة الاستقبال. صحيح إني مهتم بالقلادة، لكني لم أدخل غرفة العرض بعد الساعة 10:00."],
+["👩🏼","إيما كارتر","زائرة","كنت بتفرج على المعروضات، وبعد 10:30 كنت في الكافيتريا. أنا لا أعرف أصلًا طريقة فتح الصندوق."],
+["👨🏽","جيمس بورتر","حارس الأمن","كنت أتابع الكاميرات. رأيت شخصًا يدخل الممر حوالي 10:37، لكني لم أرَ وجهه."]
+];
+
+let eSeen=new Set(), sSeen=new Set();
+const notes=document.getElementById("notes");
+notes.value=localStorage.getItem("casezero_notes")||"";
+notes.oninput=()=>localStorage.setItem("casezero_notes",notes.value);
+
+function renderEvidence(){
+ const g=document.getElementById("evidenceGrid");
+ g.innerHTML=evidence.map((x,i)=>`<button class="item ${eSeen.has(i)?"done":""}" onclick="readEvidence(${i})"><div class="icon">${x[0]}</div><b>${x[1]}</b><small>${eSeen.has(i)?"✓ تم الفحص — اضغط للقراءة مرة أخرى":"اضغط لفحص الدليل"}</small></button>`).join("");
+}
+function renderSuspects(){
+ const g=document.getElementById("suspectGrid");
+ g.innerHTML=suspects.map((x,i)=>`<button class="item ${sSeen.has(i)?"done":""}" onclick="readSuspect(${i})"><div class="icon">${x[0]}</div><b>${x[1]}</b><small>${x[2]}<br>${sSeen.has(i)?"✓ تم الاستجواب — اضغط للقراءة مرة أخرى":"اضغط لسماع أقواله"}</small></button>`).join("");
+}
+function readEvidence(i){
+ eSeen.add(i); renderEvidence();
+ const b=document.getElementById("evidenceRead"); b.classList.add("show");
+ b.innerHTML=`<b style="font-size:16px">${evidence[i][0]} ${evidence[i][1]}</b><div class="quote">${evidence[i][2]}</div><div class="hint">💡 اسأل نفسك: مين عنده علاقة بالدليل ده؟</div><button class="secondary" onclick="document.getElementById('evidenceRead').classList.remove('show')">رجوع للأدلة</button>`;
+ document.getElementById("ec").textContent=eSeen.size;
+ if(eSeen.size===5)document.getElementById("toSuspects").style.display="block";
+ update(2);
+}
+function readSuspect(i){
+ sSeen.add(i); renderSuspects();
+ const b=document.getElementById("suspectRead"); b.classList.add("show");
+ b.innerHTML=`<b style="font-size:16px">${suspects[i][0]} ${suspects[i][1]}</b><div style="color:#91a0aa;margin:6px 0">${suspects[i][2]}</div><div class="quote">«${suspects[i][3]}»</div><div class="hint">💡 قارن كلامه بالأدلة اللي قرأتها.</div><button class="secondary" onclick="document.getElementById('suspectRead').classList.remove('show')">رجوع للمشتبه بهم</button>`;
+ document.getElementById("sc").textContent=sSeen.size;
+ if(sSeen.size===4)document.getElementById("toFinal").style.display="block";
+ update(3);
+}
+function go(n){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+ document.getElementById("s"+n).classList.add("active");
+ window.scrollTo({top:document.querySelector(".hero").offsetTop-75,behavior:"smooth"});
+ update(n);
+}
+function update(step){
+ let p=step===1?10:step===2?35:step===3?65:100;
+ if(step===2)p=35+Math.round(eSeen.size*5);
+ if(step===3)p=65+Math.round(sSeen.size*3);
+ document.getElementById("pct").textContent=Math.min(p,100)+"%";
+ document.getElementById("bar").style.width=Math.min(p,100)+"%";
+ document.getElementById("status").textContent=step===1?"اقرأ القضية":step===2?"مرحلة الأدلة":step===3?"مرحلة الاستجواب":"وقت القرار";
+}
+function answer(i){
+ const r=document.getElementById("result");
+ r.classList.add("show");
+ const names=["صوفيا لين","دانيال مور","إيما كارتر","جيمس بورتر"];
+ const chosen=names[i] || "";
+ if(i===0){
+  r.className="result good";
+  r.innerHTML="<b>🎉 صح! حليت القضية.</b><br><br>الأدلة كلها بتتجمع حول صوفيا: هي استعارت حقيبة أدوات الترميم قبل الاختفاء، الكاميرا أظهرت شخصًا يحمل حقيبة أدوات، الخيط الأزرق يتطابق مع سترتها، والقفاز عليه مادة من غرفة الترميم. كمان القفل لم يُكسر.";
+  document.getElementById("status").textContent="القضية اتحلت ✓";
+ }else{
+  r.className="result bad";
+  r.innerHTML="<b>❌ إجابتك غلط.</b><br><br>أنت اخترت: <b>"+chosen+"</b><br>المشتبه الحقيقي هو: <b>صوفيا لين</b>.<br><br>الدليل الأقوى هو سجل الأدوات: صوفيا استعارت حقيبة أدوات الترميم قبل الاختفاء، ومعها تتوافق أدلة القفاز والخيط الأزرق والكاميرا.";
+  document.getElementById("status").textContent="الإجابة كانت غلط ✕";
+ }
+ document.getElementById("restart").style.display="block";
+ if(typeof window.caseZeroShowResult==="function"){
+   window.caseZeroShowResult(chosen);
+ }
+}
+function help(){
+ document.getElementById("modalCard").innerHTML=`<h3>❔ طريقة اللعب</h3><p>اللعبة مش محتاجة أي معرفة مسبقة.</p><ul><li>اقرأ القضية.</li><li>افحص الأدلة الخمسة واحدًا واحدًا.</li><li>استجوب المشتبه بهم الأربعة.</li><li>اربط الأدلة بأقوالهم.</li><li>اختار الشخص الذي تشير إليه الأدلة.</li></ul><button class="action" onclick="closeHelp()">تمام، ابدأ</button>`;
+ document.getElementById("modal").classList.add("show");
+}
+function closeHelp(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")closeHelp()};
+renderEvidence();renderSuspects();update(1);
+
+// CaseZero final answer/result handling
+(function(){
+  const resultBox = document.getElementById('resultBox');
+  const resultIcon = document.getElementById('resultIcon');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultText = document.getElementById('resultText');
+  const realSuspect = document.getElementById('realSuspect');
+  const solutionReason = document.getElementById('solutionReason');
+  const restartBtn = document.getElementById('restartBtn');
+  if(!resultBox) return;
+
+  const CORRECT = 'صوفيا لين';
+
+  function showCaseResult(choice){
+    const chosen = String(choice || '').trim();
+    const correct = chosen === CORRECT;
+    resultBox.hidden = false;
+    resultBox.classList.toggle('wrong', !correct);
+
+    if(correct){
+      resultIcon.textContent = '✓';
+      resultTitle.textContent = 'أحسنت! حليت القضية صح 🎉';
+      resultText.textContent = 'اختيارك كان صحيحًا. جمعت الأدلة وربطتها بالمشتبه المناسب.';
+    }else{
+      resultIcon.textContent = '✕';
+      resultTitle.textContent = 'للأسف، إجابتك غلط';
+      resultText.textContent = 'ولا يهمك! شوف الحل الصحيح واعرف الدليل اللي كشف المشتبه الحقيقي.';
+    }
+
+    realSuspect.textContent = CORRECT;
+    solutionReason.textContent =
+      'صوفيا هي أمينة المتحف، وقد استعارت حقيبة أدوات الترميم قبل اختفاء القلادة. كما أن القفاز وخيط السترة وسجل الأدوات تربطها بمسرح القضية.';
+    resultBox.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  // Expose a simple hook so the existing answer buttons can call it.
+  window.caseZeroShowResult = showCaseResult;
+
+  // Also catch common answer-button patterns already present in the page.
+  document.querySelectorAll('[data-suspect], [data-answer], .suspect-choice, .answer-btn, .choice-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const value = btn.getAttribute('data-suspect') ||
+                    btn.getAttribute('data-answer') ||
+                    btn.textContent.replace(/[✓✕]/g,'').trim();
+      if(value && /صوفيا|دانيال|إيما|جيمس/.test(value)) showCaseResult(value);
+    }, {once:false});
+  });
+
+  if(restartBtn){
+    restartBtn.addEventListener('click', ()=>{
+      resultBox.hidden = true;
+      resultBox.classList.remove('wrong');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+})();
+
+</script>
+
+<section id="resultBox" class="result-box" hidden aria-live="polite">
+  <div id="resultIcon" class="result-icon">✓</div>
+  <h2 id="resultTitle">أحسنت! حليت القضية صح 🎉</h2>
+  <p id="resultText"></p>
+  <div class="solution-card">
+    <span>المشتبه الحقيقي</span>
+    <strong id="realSuspect">صوفيا لين</strong>
+    <p id="solutionReason"></p>
+  </div>
+  <button type="button" id="restartBtn" class="primary-btn">العب القضية من جديد</button>
+</section>
+
+</body>
+</html>
